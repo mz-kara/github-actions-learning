@@ -1,0 +1,33 @@
+name: Custom
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  custom-job:
+    name: custom jobs
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18]
+        
+    defaults:
+      run:
+        working-directory: ./sample-app
+
+    steps:
+      - name: Checkout directory
+        uses: actions/checkout@v4
+        
+      - name: set up node.js version ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: install dependencies
+        run: npm install
+
+      - name: run tests
+        run: npm test
